@@ -38,22 +38,41 @@ ctx.fillRect(x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
 var bulletMovement;
 
 // Shooting function for the player
-var shoot = function() {
+var shoot = function() { 
+	if (sx != x || sy != y) {
+		sx=x;
+		sy=y;
+		if (sy >= 0) { // Checks if the bullet is passed the end of the screen.
+			if (bulletMovement) return;
+			bulletMovement = setInterval(function() {
+				ctx.clearRect(sx, sy, BULLET_SIZE, BULLET_SIZE);
+				sy -= BULLET_SIZE;
+				ctx.fillStyle = "yellow";
+				ctx.fillRect(sx , sy, BULLET_SIZE, BULLET_SIZE);
+			}, 10)
+		} else { // if the bullets are passed the end of the screen, set the position to normal and erase the square.
+			ctx.clearRect(sx, sy, BULLET_SIZE, BULLET_SIZE)
+			sx = x  ; //XPoition of user bullet origin
+			sy = y - PLAYER_HEIGHT/2 ;//YPosition of user bullet origin.
+		}
+	}else{
+		if (sy >= 0) { // Checks if the bullet is passed the end of the screen.
+			if (bulletMovement) return;
+	
+			bulletMovement = setInterval(function() {
+				ctx.clearRect(sx, sy, BULLET_SIZE, BULLET_SIZE);
+				sy -= BULLET_SIZE;
+				ctx.fillStyle = "yellow";
+				ctx.fillRect(sx , sy, BULLET_SIZE, BULLET_SIZE);
+			}, 10)
+		} else { // if the bullets are passed the end of the screen, set the position to normal and erase the square.
+			ctx.clearRect(sx, sy, BULLET_SIZE, BULLET_SIZE)
+			sx = x  ; //XPoition of user bullet origin
+			sy = y - PLAYER_HEIGHT/2 ;//YPosition of user bullet origin.
+		}
 
-	if (sy >= 0) { // Checks if the bullet is passed the end of the screen.
-		if (bulletMovement) return;
-
-		bulletMovement = setInterval(function() {
-			ctx.clearRect(sx, sy, BULLET_SIZE, BULLET_SIZE);
-			sy -= BULLET_SIZE;
-			ctx.fillStyle = "yellow";
-			ctx.fillRect(sx , sy, BULLET_SIZE, BULLET_SIZE);
-		}, 10)
-	} else { // if the bullets are passed the end of the screen, set the position to normal and erase the square.
-		ctx.clearRect(sx, sy, BULLET_SIZE, BULLET_SIZE)
-		sx = x  ; //XPoition of user bullet origin
-		sy = y - PLAYER_HEIGHT/2 ;//YPosition of user bullet origin.
 	}
+	
 }
 
 // This function is called when moving left(player)
